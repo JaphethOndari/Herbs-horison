@@ -4,10 +4,6 @@ function toggleMenu() {
     nav.classList.toggle("show");
 }
 
-// Toggle Light/Dark Mode
-function toggleMode() {
-    document.body.classList.toggle("dark");
-}
 
 // Close mobile menu when clicking on a nav link
 document.addEventListener('DOMContentLoaded', function() {

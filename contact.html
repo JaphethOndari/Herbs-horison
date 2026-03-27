@@ -1,222 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | Herbs Horizon</title>
+    <title>About | Herbs Horizon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Images/logo.jpg" type="image/png">
     <style>
-        body {
-            font-family: Arial;
-            margin: 0;
-            background: #f4faf5;
-        }
+        /* --- General page styling --- */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4faf5;
+    color: #1b5e20;
+}
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 25px;
-            background: #1b5e20;
-            color: white;
-        }
+/* --- Main Section --- */
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 20px;
+}
 
-        .logo img {
-            height: 55px;
-        }
+#btt {
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    background: white;
+    padding: 30px 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 
-        .menu-btn {
-            font-size: 28px;
-            cursor: pointer;
-            display: none;
-        }
+#btt h2 {
+    margin-bottom: 25px;
+    font-size: 24px;
+    color: #1b5e20;
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: bold;
-        }
+/* Buttons container */
+.method-select {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-        section {
-            max-width: 1000px;
-            margin: auto;
-            padding: 40px 20px;
-        }
+/* Button styling */
+.method-select button {
+    padding: 15px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
 
-        h2 {
-            text-align: center;
-            color: #1b5e20;
-            margin-bottom: 30px;
-        }
+/* WhatsApp button */
+.method-select button:first-child {
+    background-color:#1b5e20;; /* WhatsApp green */
+    color: white;
+}
 
-        .method-select {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+/* Email button */
+.method-select button:last-child {
+    background-color: #1b5e20;
+    color: white;
+}
 
-        .method-select button {
-            background: #1b5e20;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            margin: 10px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+/* Hover effect */
+.method-select button:hover {
+    opacity: 0.85;
+}
 
-        .method-select button:hover {
-            background: #124517;
-        }
-
-        form {
-            display: none;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
-
-        th {
-            background: #e0f2e9;
-            color: #1b5e20;
-        }
-
-        .remove-btn {
-            background: #c62828;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .summary {
-            background: #eef7f0;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 8px;
-            border: 1px solid #cfe8d2;
-        }
-
-        .summary h3 {
-            margin-top: 0;
-            color: #1b5e20;
-        }
-
-        .submit-btn {
-            margin-top: 20px;
-            background: #1b5e20;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            font-size: 16px;
-        }
-
-        footer {
-            background: #1b5e20;
-            color: white;
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            padding: 30px;
-            margin-top: 40px;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            margin: 5px 0;
-        }
-
-        .success-page {
-            display: none;
-            max-width: 600px;
-            margin: 80px auto;
-            text-align: center;
-            background: #e0f7e9;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .success-page h2 {
-            color: #1b5e20;
-            margin-bottom: 20px;
-        }
-
-        .success-page p {
-            font-size: 1.1em;
-            margin-bottom: 15px;
-        }
-
-        .success-page span {
-            font-weight: bold;
-        }
-
-        @media(max-width:768px) {
-            .menu-btn {
-                display: block;
-            }
-
-            nav {
-                display: none;
-                flex-direction: column;
-                background: #1b5e20;
-                position: absolute;
-                top: 70px;
-                right: 0;
-                width: 200px;
-                padding: 20px;
-            }
-
-            nav.show {
-                display: flex;
-            }
-        }
+/* Links inside buttons */
+.method-select button a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+}
     </style>
 </head>
 
 <body>
 
     <header>
-        <div class="logo"><img src="Images/logo.jpg" alt="Herbs Horizon Logo"></div>
+        <div class="logo">
+            <img src="Images/logo.jpg" alt="" style="height:60px;vertical-align:middle;margin-right:10px;">
+           
+        </div>
         <div class="menu-btn" onclick="toggleMenu()">☰</div>
         <nav id="nav">
             <a href="index.html">Home</a>
@@ -227,93 +103,26 @@
         </nav>
     </header>
 
-    <section>
+      <section>
         <div id="btt">
             <h2>Export Order Request</h2>
 
             <div class="method-select">
-                <button onclick="chooseMethod('whatsapp')">Order via WhatsApp</button>
-                <button onclick="chooseMethod('email')">Order via Email</button>
+                <button onclick=""> <a href="whatsapp.html" style="color: white; text-decoration: none;">Order via WhatsApp</a></button>
+                <button onclick=""><a href="email.html" style="color: white; text-decoration: none;">Order via
+                        Email</a></button>
             </div>
-        </div>
-
-        <form id="orderForm">
-
-            <label>Full Name</label>
-            <input type="text" id="name" required>
-
-            <label>Your Email</label>
-            <input type="email" id="senderEmail" required>
-
-            <label>Destination Country</label>
-            <input type="text" id="country" placeholder="e.g Germany, UAE, UK">
-
-            <label>Packaging Type</label>
-            <select id="packaging">
-                <option>Fresh Packed</option>
-                <option>Dried Packed</option>
-            </select>
-
-            <label>Herbs & Quantities</label>
-            <table id="herbsTable">
-                <tr>
-                    <th>Herb</th>
-                    <th>Batch (g)</th>
-                    <th>Total (g)</th>
-                    <th>Action</th>
-                </tr>
-                <tr>
-                    <td>
-                        <select class="herbSelect">
-                            <option value="">Select Herb</option>
-                            <option>Thyme</option>
-                            <option>Rosemary</option>
-                            <option>Sage</option>
-                            <option>Mint</option>
-                            <option>Basil</option>
-                            <option>Tarragon</option>
-                            <option>Oregano</option>
-                        </select>
-                    </td>
-                    <td><input type="number" class="batchQty" placeholder="Batch (g)"></td>
-                    <td><input type="number" class="totalWeight" placeholder="Total (kg)"></td>
-                    <td><button type="button" onclick="removeRow(this)" class="remove-btn">Remove</button></td>
-                </tr>
-            </table>
-            <button type="button" class="submit-btn" onclick="addRow()">Add Herb</button>
-
-            <div class="summary" id="summary">
-                <h3>Order Summary</h3>
-                <p>Total Items: <span id="totalItems">1</span></p>
-                <p>Total Weight: <span id="totalWeightKg">0.00</span> kg</p>
-            </div>
-
-            <label>Comments</label>
-            <textarea id="comments"></textarea>
-
-            <label>Required Delivery Date</label>
-            <input type="date" id="date">
-
-            <button type="button" class="submit-btn" onclick="submitOrder()">Submit Order</button>
-
-        </form>
-
-        <div class="success-page" id="successPage">
-            <h2>✅ Order Sent Successfully!</h2>
-            <p>Thank you, <span id="successName"></span>, your order has been submitted.</p>
-            <p>You will be redirected to the homepage shortly.</p>
-        </div>
-
-    </section>
-
+        </div>  
+      </section>
     <footer>
         <div>
             <h3>Herbs Horizon</h3>
             <p>Premium Kenyan herbs exported worldwide.</p>
             <p>Email: herbshorizon86@gmail.com</p>
-            <p>Phone: 0743 104 543</p>
-            <p>Nairobi, Kenya</p>
+            <p>Phone: +254 743 104 543</p>
+            <p>Address: Nairobi, Kenya</p>
         </div>
+
         <div>
             <h3>Quick Links</h3>
             <a href="index.html">Home</a>
@@ -322,104 +131,13 @@
             <a href="export.html">Export</a>
             <a href="contact.html">Contact</a>
         </div>
+
+        <div>
+            <h3>Follow Us</h3>
+            <a href="#">Facebook</a>
+        </div>
     </footer>
 
-    <!-- EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <script>
-        (function () { emailjs.init("OlYSTkVoQ0ndHBBtR"); })();
-    </script>
 
-    <script>
-        function toggleMenu() { document.getElementById("nav").classList.toggle("show") }
-        let method = ""
-        function chooseMethod(type) { method = type; document.getElementById("orderForm").style.display = "block" }
-
-        function addRow() {
-            let table = document.getElementById("herbsTable")
-            let row = table.insertRow()
-            row.innerHTML = `<td>
-<select class="herbSelect">
-<option value="">Select Herb</option>
-<option>Thyme</option>
-<option>Rosemary</option>
-<option>Sage</option>
-<option>Mint</option>
-<option>Basil</option>
-<option>Tarragon</option>
-<option>Oregano</option>
-</select></td>
-<td><input type="number" class="batchQty" placeholder="Batch (g)"></td>
-<td><input type="number" class="totalWeight" placeholder="Total (g)"></td>
-<td><button type="button" onclick="removeRow(this)" class="remove-btn">Remove</button></td>`
-            updateSummary()
-            let inputs = row.querySelectorAll('input,select')
-            inputs.forEach(inp => { inp.addEventListener('input', updateSummary) })
-        }
-
-        function removeRow(btn) { btn.closest('tr').remove(); updateSummary(); }
-
-        function updateSummary() {
-            let totalItems = 0, totalWeight = 0
-            document.querySelectorAll('#herbsTable tr').forEach((row, index) => {
-                if (index === 0) return
-                let herb = row.querySelector('.herbSelect').value
-                let total = row.querySelector('.totalWeight').value
-                if (herb && total) { totalItems++; totalWeight += Number(total) }
-            })
-            document.getElementById('totalItems').innerText = totalItems
-            document.getElementById('totalWeightKg').innerText = (totalWeight).toFixed(2)
-        }
-
-        function submitOrder() {
-            let name = document.getElementById("name").value
-            let email = document.getElementById("senderEmail").value
-            let country = document.getElementById("country").value
-            let packaging = document.getElementById("packaging").value
-            let comments = document.getElementById("comments").value
-            let date = document.getElementById("date").value
-
-            let itemsText = ""
-            document.querySelectorAll('#herbsTable tr').forEach((row, index) => {
-                if (index === 0) return
-                let herb = row.querySelector('.herbSelect').value
-                let batch = row.querySelector('.batchQty').value
-                let total = row.querySelector('.totalWeight').value
-                if (herb && batch && total) itemsText += (index) + ". " + herb + " | Batch: " + batch + "g | Total: " + total + "g\n"
-            })
-
-            if (!name || !email || itemsText === "") { alert("Please fill name, email and at least one herb"); return }
-
-            if (method === "whatsapp") {
-                let message = `Hello Herbs Horizon,\n\nName: ${name}\nEmail: ${email}\nCountry: ${country}\nPackaging: ${packaging}\nOrder Items:\n${itemsText}\nDelivery Date: ${date}\nComments:\n${comments}`
-                window.open(`https://wa.me/254743104543?text=${encodeURIComponent(message)}`, "_blank")
-            }
-
-            if (method === "email") {
-                let templateParams = {
-                    name: name,
-                    email: email,
-                    country: country,
-                    packaging: packaging,
-                    items: itemsText,
-                    comments: comments,
-                    date: date
-                };
-                emailjs.send("service_0fsva1n", "template_igoj3vu", templateParams)
-                    .then(function (response) {
-                        document.getElementById("btt").style.display = "none"
-                        document.getElementById("orderForm").style.display = "none"
-                        document.getElementById("successName").innerText = name
-                        document.getElementById("successPage").style.display = "block"
-                        setTimeout(() => { window.location.href = "index.html" }, 4500)
-                    }, function (error) {
-                        alert("Failed to send order. Please try again.")
-                        console.log(error)
-                    })
-            }
-        }
-    </script>
-
+    <script src="script.js"></script>
 </body>
-
-</html>

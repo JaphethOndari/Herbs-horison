@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Herbs Horizon Export Order</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="Images/logo.jpg" type="image/png">
+
+<style>
+/* --- Basic styling --- */
+body { font-family: Arial, Helvetica, sans-serif; background: #f4faf5; margin: 0; }
+.container { max-width: 900px; margin: auto; padding: 40px 20px; }
+h1 { text-align: center; color: #1b5e20; }
+form { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
+label { display: block; margin-top: 15px; font-weight: bold; }
+input, select, textarea { width: 100%; padding: 10px; margin-top: 6px; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; transition: all 0.3s ease; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: #1b5e20; box-shadow: 0 0 5px rgba(27,94,32,0.3); }
+textarea { min-height: 80px; }
+
+/* Herb table */
+#herbsTable { width: 100%; margin-top: 20px; border-collapse: collapse; }
+#herbsTable th, #herbsTable td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+#herbsTable th { background: #e0f2e9; color: #1b5e20; }
+button { margin-top: 15px; background: #1b5e20; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; }
+button:hover { background: #124517; }
+.remove-btn { background: #c62828; }
+.remove-btn:hover { background: #8b1a1a; }
+.submit-btn { width:100%; font-size:16px; padding:14px; }
+
+/* Flex layout for batch & total */
+.flex-row { display: flex; gap: 10px; justify-content: center; }
+.flex-row select { flex: 1; border: 1px solid #1b5e20; border-radius: 6px; padding: 8px; background: #f4faf5; color: #1b5e20; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+.flex-row select:hover { background: #e0f2e9; }
+.flex-row select:focus { outline: none; border-color:#124517; box-shadow:0 0 5px rgba(27,94,32,0.4); }
+
+/* Tooltip */
+.tooltip { display:inline-block; position:relative; cursor:pointer; color:#1b5e20; font-weight:bold; }
+.tooltip .tooltiptext { visibility:hidden; width:220px; background:#1b5e20; color:#fff; text-align:left; border-radius:6px; padding:8px; position:absolute; z-index:1; top:25px; left:50%; transform:translateX(-50%); font-size:13px; opacity:0; transition:opacity 0.3s; }
+.tooltip:hover .tooltiptext { visibility:visible; opacity:1; }
+
+/* Grand total */
+#grandTotal { margin-top: 15px; font-weight:bold; text-align:right; font-size:16px; color:#1b5e20; }
+
+/* Mobile-friendly card style */
+@media (max-width: 600px){
+    #herbsTable, #herbsTable tr, #herbsTable td, #herbsTable th { display: block; width: 100%; }
+    #herbsTable tr { margin-bottom: 15px; border:1px solid #ddd; border-radius:8px; padding:10px; background:#f9fff9; }
+    #herbsTable th { display:none; }
+    #herbsTable td { text-align:left; padding:8px 0; border:none; }
+    .flex-row { flex-direction: column; }
+    .remove-btn { width: 100%; margin-top:10px; }
+}
+
+/* Custom calendar styling */
+.custom-calendar-wrapper { position: relative; width: 100%; max-width: 300px; margin-top: 5px; }
+#date { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #1b5e20; font-weight: bold; background: #f4faf5; color: #1b5e20; cursor: pointer; transition: all 0.3s ease; }
+#date:focus { outline: none; border-color: #124517; box-shadow: 0 0 8px rgba(27,94,32,0.4); }
+.calendar { position: absolute; top: 45px; left: 0; background: white; border: 1px solid #1b5e20; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); width: 100%; max-width: 300px; z-index: 100; padding: 10px; box-sizing: border-box; }
+.calendar.hidden { display: none; }
+.calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.calendar-header button { background: #1b5e20; color: white; border: none; border-radius: 6px; padding: 5px 10px; cursor: pointer; font-weight: bold; }
+.calendar-header button:hover { background: #124517; }
+.calendar-days, .calendar-dates { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: 5px; }
+.calendar-days { font-weight: bold; color: #1b5e20; }
+.calendar-dates div { padding: 8px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; }
+.calendar-dates div:hover { background: #e0f2e9; }
+.calendar-dates .disabled { color: #ccc; cursor: not-allowed; }
+.calendar-dates .selected { background: #1b5e20; color: white; }
+@media (max-width: 400px) { .calendar { max-width: 100%; } }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Herbs Horizon Export Order</h1>
+<form id="orderForm">
+<label>Full Name</label><input type="text" id="name" required>
+<label>Email</label><input type="email" id="email" required>
+<label>Contact Number (Optional)</label><input type="tel" id="contact" placeholder="e.g. +254712345678">
+<label>Destination Country</label><input type="text" id="country">
+<label>Packaging Type</label>
+<select id="packaging"><option>Fresh Packed</option><option>Dried Packed</option></select>
+
+<h3>Herb Order</h3>
+<table id="herbsTable">
+<tr>
+<th>Herb</th>
+<th>Batch & Total <span class="tooltip">ℹ<span class="tooltiptext">Batch: small bunch size in grams. Total: overall weight in kg.</span></span></th>
+<th>Action</th>
+</tr>
+<tr>
+<td><select class="herb"><option value="">Select Herb</option><option>Thyme</option><option>Rosemary</option><option>Sage</option><option>Mint</option><option>Basil</option><option>Tarragon</option><option>Oregano</option></select></td>
+<td>
+<div class="flex-row">
+<select class="batch" onchange="updateGrandTotal()"><option value="">Batch (g)</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option><option>100</option></select>
+<select class="total" onchange="updateGrandTotal()"></select>
+</div>
+<small style="color:#1b5e20;">Select batch size and total weight</small>
+</td>
+<td><button type="button" class="remove-btn" onclick="removeRow(this); updateGrandTotal()">Remove</button></td>
+</tr>
+</table>
+<div id="grandTotal">Grand Total: 0 kg</div>
+<button type="button" onclick="addRow()">Add Herb</button>
+
+<label>Comments</label><textarea id="comments"></textarea>
+
+<label>Delivery Date</label>
+<div class="custom-calendar-wrapper">
+  <input type="text" id="date" placeholder="Select delivery date" readonly>
+  <div id="calendar" class="calendar hidden"></div>
+</div>
+
+<button type="submit" class="submit-btn">Submit Order via WhatsApp</button>
+</form>
+</div>
+
+<script>
+// Populate total options
+document.querySelectorAll('.total').forEach(select=>{
+  for(let i=50;i<=2000;i+=50){ let opt=document.createElement('option'); opt.textContent=i+' kg'; select.appendChild(opt); }
+});
+
+function addRow(){
+  let table=document.getElementById("herbsTable");
+  let row=table.insertRow();
+  row.innerHTML=`<td><select class="herb"><option value="">Select Herb</option><option>Thyme</option><option>Rosemary</option><option>Sage</option><option>Mint</option><option>Basil</option><option>Tarragon</option><option>Oregano</option></select></td>
+<td><div class="flex-row"><select class="batch" onchange="updateGrandTotal()"><option value="">Batch (g)</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option><option>100</option></select><select class="total" onchange="updateGrandTotal()"></select></div><small style="color:#1b5e20;">Select batch size and total weight</small></td>
+<td><button type="button" class="remove-btn" onclick="removeRow(this); updateGrandTotal()">Remove</button></td>`;
+  let totalSelect = row.querySelector('.total');
+  for(let i=50;i<=2000;i+=50){ let opt=document.createElement('option'); opt.textContent=i+" kg"; totalSelect.appendChild(opt); }
+}
+
+function removeRow(btn){ btn.closest("tr").remove(); updateGrandTotal(); }
+
+function updateGrandTotal(){
+  let total=0;
+  document.querySelectorAll("#herbsTable tr").forEach((row,index)=>{
+    if(index===0) return;
+    let val=row.querySelector(".total").value;
+    if(val) total+=parseFloat(val.replace(' kg',''));
+  });
+  document.getElementById("grandTotal").textContent="Grand Total: "+total+" kg";
+}
+
+// Calendar (same as your original code)
+const dateInput=document.getElementById('date');
+const calendar=document.getElementById('calendar');
+let currentDate=new Date(); let selectedDate=null;
+function buildCalendar(year, month){
+  calendar.innerHTML='';
+  const header=document.createElement('div'); header.classList.add('calendar-header');
+  const prev=document.createElement('button'); prev.textContent='<'; prev.onclick=()=>{changeMonth(-1);}
+  const next=document.createElement('button'); next.textContent='>'; next.onclick=()=>{changeMonth(1);}
+  const monthYear=document.createElement('span'); monthYear.textContent=new Intl.DateTimeFormat('en-US',{month:'long', year:'numeric'}).format(new Date(year, month));
+  header.appendChild(prev); header.appendChild(monthYear); header.appendChild(next); calendar.appendChild(header);
+  const days=document.createElement('div'); days.classList.add('calendar-days'); ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>days.innerHTML+=`<div>${d}</div>`); calendar.appendChild(days);
+  const dates=document.createElement('div'); dates.classList.add('calendar-dates');
+  const firstDay=new Date(year, month, 1).getDay(); const lastDate=new Date(year, month+1,0).getDate();
+  for(let i=0;i<firstDay;i++){ const empty=document.createElement('div'); empty.classList.add('disabled'); dates.appendChild(empty); }
+  const minDate=new Date(); minDate.setDate(minDate.getDate()+1);
+  for(let d=1; d<=lastDate; d++){
+    const cell=document.createElement('div'); const cellDate=new Date(year, month, d);
+    if(cellDate<minDate){ cell.classList.add('disabled'); }
+    else{ cell.onclick=()=>{ selectedDate=cellDate; dateInput.value=cellDate.toISOString().split('T')[0]; buildCalendar(year, month); calendar.classList.add('hidden'); }; }
+    if(selectedDate && cellDate.toDateString()===selectedDate.toDateString()){ cell.classList.add('selected'); }
+    cell.textContent=d; dates.appendChild(cell);
+  }
+  calendar.appendChild(dates);
+}
+function changeMonth(delta){ currentDate.setMonth(currentDate.getMonth()+delta); buildCalendar(currentDate.getFullYear(), currentDate.getMonth()); }
+dateInput.addEventListener('click', ()=>{ calendar.classList.toggle('hidden'); buildCalendar(currentDate.getFullYear(), currentDate.getMonth()); });
+document.addEventListener('click',(e)=>{ if(!calendar.contains(e.target) && e.target!==dateInput){ calendar.classList.add('hidden'); } });
+
+// WhatsApp Submit with formatted message
+document.getElementById("orderForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  let name=document.getElementById("name").value;
+  let email=document.getElementById("email").value;
+  let contact=document.getElementById("contact").value;
+  let country=document.getElementById("country").value;
+  let packaging=document.getElementById("packaging").value;
+  let comments=document.getElementById("comments").value;
+  let dateVal=document.getElementById("date").value;
+
+  let items=''; let count=1;
+  document.querySelectorAll("#herbsTable tr").forEach((row,index)=>{
+    if(index===0) return;
+    let herb=row.querySelector(".herb").value;
+    let batch=row.querySelector(".batch").value;
+    let total=row.querySelector(".total").value;
+    if(herb && batch && total){ items+=`${count}. ${herb} | Batch: ${batch}g | Total: ${total}\n`; count++; }
+  });
+
+  let message=`*New Export Order*\n
+*Name:* ${name}
+*Email:* ${email}
+${contact ? "*Contact:* "+contact+"\n":""}
+*Country:* ${country}
+*Packaging:* ${packaging}
+
+*Order Items:*
+${items}
+*Grand Total:* ${document.getElementById("grandTotal").textContent.replace("Grand Total: ","")}
+
+*Delivery Date:* ${dateVal}
+
+*Comments:* ${comments}`;
+
+  window.open(`https://wa.me/254743104543?text=${encodeURIComponent(message)}`, "_blank");
+});
+</script>
+</body>
+</html>
